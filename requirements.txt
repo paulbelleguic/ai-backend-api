@@ -12,3 +12,5 @@ langchain-core
 langchain-community
 langchain-huggingface
 torch
+pytest
+httpx
