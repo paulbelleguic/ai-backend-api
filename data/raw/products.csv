@@ -1,0 +1,41 @@
+product_id,name,category,gender,color,size,price,stock,brand,season
+P001,Essential Black T-Shirt,t-shirt,men,black,M,24.99,15,UrbanBasic,all-season
+P002,Essential Black T-Shirt,t-shirt,men,black,L,24.99,8,UrbanBasic,all-season
+P003,Classic White Shirt,shirt,men,white,M,49.99,12,CityWear,all-season
+P004,Classic White Shirt,shirt,men,white,L,49.99,0,CityWear,all-season
+P005,Slim Blue Jeans,jeans,men,blue,40,59.99,6,DenimLab,all-season
+P006,Slim Blue Jeans,jeans,men,blue,42,59.99,4,DenimLab,all-season
+P007,Running Sneakers,sneakers,men,black,42,89.99,10,FastMove,spring-summer
+P008,Running Sneakers,sneakers,men,black,43,89.99,3,FastMove,spring-summer
+P009,Winter Puffer Jacket,jacket,men,navy,L,129.99,5,NordLine,winter
+P010,Winter Puffer Jacket,jacket,men,navy,XL,129.99,2,NordLine,winter
+P011,Beige Trench Coat,coat,women,beige,M,149.99,7,Elegance,autumn-spring
+P012,Beige Trench Coat,coat,women,beige,L,149.99,4,Elegance,autumn-spring
+P013,Floral Summer Dress,dress,women,red,S,69.99,9,SoftBloom,spring-summer
+P014,Floral Summer Dress,dress,women,red,M,69.99,5,SoftBloom,spring-summer
+P015,High Waist Black Jeans,jeans,women,black,36,64.99,11,DenimLab,all-season
+P016,High Waist Black Jeans,jeans,women,black,38,64.99,0,DenimLab,all-season
+P017,White Oversized Hoodie,hoodie,unisex,white,M,54.99,14,UrbanBasic,autumn-winter
+P018,White Oversized Hoodie,hoodie,unisex,white,L,54.99,6,UrbanBasic,autumn-winter
+P019,Leather Chelsea Boots,boots,women,brown,38,119.99,4,StepOne,autumn-winter
+P020,Leather Chelsea Boots,boots,women,brown,39,119.99,1,StepOne,autumn-winter
+P021,Sport Leggings,leggings,women,black,S,34.99,13,MotionFit,all-season
+P022,Sport Leggings,leggings,women,black,M,34.99,8,MotionFit,all-season
+P023,Cotton Polo Shirt,polo,men,green,M,39.99,10,CityWear,spring-summer
+P024,Cotton Polo Shirt,polo,men,green,L,39.99,5,CityWear,spring-summer
+P025,Wool Blend Sweater,sweater,women,grey,M,74.99,6,CozyForm,autumn-winter
+P026,Wool Blend Sweater,sweater,women,grey,L,74.99,2,CozyForm,autumn-winter
+P027,Canvas Sneakers,sneakers,unisex,white,41,59.99,9,StepOne,spring-summer
+P028,Canvas Sneakers,sneakers,unisex,white,42,59.99,7,StepOne,spring-summer
+P029,Relaxed Fit Shorts,shorts,men,beige,M,29.99,12,SunnyDays,spring-summer
+P030,Relaxed Fit Shorts,shorts,men,beige,L,29.99,6,SunnyDays,spring-summer
+P031,Knitted Cardigan,cardigan,women,cream,S,79.99,5,CozyForm,autumn-winter
+P032,Knitted Cardigan,cardigan,women,cream,M,79.99,3,CozyForm,autumn-winter
+P033,Performance Running Shorts,shorts,men,black,M,32.99,10,FastMove,spring-summer
+P034,Performance Running Shorts,shorts,men,black,L,32.99,4,FastMove,spring-summer
+P035,Silk Blouse,blouse,women,blue,S,84.99,4,Elegance,all-season
+P036,Silk Blouse,blouse,women,blue,M,84.99,2,Elegance,all-season
+P037,Classic Black Blazer,blazer,women,black,M,139.99,6,CityWear,all-season
+P038,Classic Black Blazer,blazer,women,black,L,139.99,2,CityWear,all-season
+P039,Thermal Base Layer,top,unisex,grey,M,27.99,16,NordLine,winter
+P040,Thermal Base Layer,top,unisex,grey,L,27.99,9,NordLine,winter
