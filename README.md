@@ -1,22 +1,35 @@
 # AI Backend API
 
-API FastAPI pour servir deux systèmes IA :
+Production-oriented AI backend built with FastAPI.
 
-- un modèle ML de prédiction via `POST /predict`
-- un assistant e-commerce hybride RAG/catalogue via `POST /chat`
+It exposes two AI services:
+
+- an ML prediction model through `POST /predict`
+- a hybrid e-commerce RAG/catalog assistant through `POST /chat`
+
+Live API:
+
+```text
+https://ai-backend-api-3jn5.onrender.com
+```
 
 ## Architecture
 
 ```text
 app/
-├── api/routes/       # endpoints FastAPI
-├── schemas/          # validation Pydantic
-├── services/         # logique métier appelée par les routes
-├── models/           # artefacts ML
-└── rag/              # pipeline RAG, FAISS, catalogue, LLM local
+├── api/routes/       # FastAPI endpoints
+├── schemas/          # Pydantic validation
+├── services/         # business logic called by routes
+├── models/           # ML artifacts
+└── rag/              # RAG pipeline, FAISS, catalog, local LLM
+
+frontend/
+└── streamlit_app.py  # portfolio UI consuming the deployed API
 ```
 
-## Lancement local
+The API layer stays thin: routes validate HTTP payloads, schemas define input/output contracts, and services call the ML or RAG pipelines.
+
+## Local API
 
 ```powershell
 python -m venv .venv
@@ -25,10 +38,26 @@ pip install -r requirements.txt
 python -m uvicorn app.main:app --reload
 ```
 
-Documentation interactive :
+Interactive documentation:
 
 ```text
 http://127.0.0.1:8000/docs
+```
+
+## Portfolio UI
+
+The Streamlit UI calls the deployed FastAPI backend by default.
+
+```powershell
+pip install -r frontend/requirements.txt
+streamlit run frontend/streamlit_app.py
+```
+
+To target a local backend:
+
+```powershell
+$env:API_URL="http://127.0.0.1:8000"
+streamlit run frontend/streamlit_app.py
 ```
 
 ## Docker
@@ -38,7 +67,7 @@ docker build -t ai-backend-api .
 docker run -p 8000:8000 ai-backend-api
 ```
 
-Ou avec Compose :
+Or with Compose:
 
 ```powershell
 docker compose up --build
@@ -52,13 +81,13 @@ docker compose up --build
 GET /health
 ```
 
-### Prediction ML
+### ML Prediction
 
 ```http
 POST /predict
 ```
 
-Exemple :
+Example:
 
 ```json
 {
@@ -74,13 +103,13 @@ Exemple :
 }
 ```
 
-### Chat RAG
+### RAG Chat
 
 ```http
 POST /chat
 ```
 
-Exemple :
+Example:
 
 ```json
 {
@@ -89,8 +118,14 @@ Exemple :
 }
 ```
 
-## Déploiement Render
+## Render Deployment
 
-Le fichier `render.yaml` permet de créer un Web Service Docker sur Render.
+`render.yaml` defines the Docker web service.
 
-Le service expose automatiquement le port fourni par la variable `PORT`.
+The API binds to the `PORT` environment variable provided by Render.
+
+## Tests
+
+```powershell
+pytest
+```
