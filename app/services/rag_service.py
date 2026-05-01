@@ -84,7 +84,7 @@ class RAGService:
         sentences = self._extract_sentences(content)
         selected = sentences[:3] if sentences else [content.strip()]
 
-        return f"Selon notre FAQ ({title}), " + " ".join(selected)
+        return " ".join(selected)
 
     def _build_effective_question(
         self,
