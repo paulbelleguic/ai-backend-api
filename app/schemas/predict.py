@@ -2,7 +2,7 @@ from pydantic import BaseModel, Field
 
 
 class PredictRequest(BaseModel):
-    purchase_year: int = Field(..., json_schema_extra={"example": 2018})
+    purchase_year: int = Field(..., ge=2016, le=2030, json_schema_extra={"example": 2019})
     purchase_month: int = Field(..., ge=1, le=12, json_schema_extra={"example": 5})
     purchase_day: int = Field(..., ge=1, le=31, json_schema_extra={"example": 15})
     purchase_hour: int = Field(..., ge=0, le=23, json_schema_extra={"example": 12})

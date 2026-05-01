@@ -51,7 +51,7 @@ with predict_tab:
     left, right = st.columns(2)
 
     with left:
-        purchase_year = st.number_input("Purchase year", min_value=2016, max_value=2020, value=2018)
+        purchase_year = st.number_input("Purchase year", min_value=2016, max_value=2030, value=2019)
         purchase_month = st.number_input("Purchase month", min_value=1, max_value=12, value=5)
         purchase_day = st.number_input("Purchase day", min_value=1, max_value=31, value=15)
         purchase_hour = st.number_input("Purchase hour", min_value=0, max_value=23, value=12)
