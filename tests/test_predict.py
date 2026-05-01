@@ -24,15 +24,16 @@ def test_predict_returns_prediction(monkeypatch):
     response = client.post(
         "/predict/",
         json={
+            "purchase_year": 2018,
             "purchase_month": 5,
+            "purchase_day": 15,
+            "purchase_hour": 12,
             "purchase_dayofweek": 2,
             "customer_state": "SP",
-            "customer_city": "sao paulo",
-            "payment_installments": 3,
-            "items_count": 2,
-            "freight_value": 21.5,
-            "review_score": 4.0,
-            "delivery_delay_days": 0,
+            "n_items": 2,
+            "n_unique_products": 2,
+            "n_unique_sellers": 1,
+            "payment_installments_max": 3,
         },
     )
 
@@ -46,15 +47,16 @@ def test_predict_validates_input():
     response = client.post(
         "/predict/",
         json={
+            "purchase_year": 2018,
             "purchase_month": 13,
+            "purchase_day": 15,
+            "purchase_hour": 12,
             "purchase_dayofweek": 2,
             "customer_state": "SP",
-            "customer_city": "sao paulo",
-            "payment_installments": 3,
-            "items_count": 2,
-            "freight_value": 21.5,
-            "review_score": 4.0,
-            "delivery_delay_days": 0,
+            "n_items": 2,
+            "n_unique_products": 2,
+            "n_unique_sellers": 1,
+            "payment_installments_max": 3,
         },
     )
 

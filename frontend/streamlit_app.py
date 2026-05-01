@@ -43,28 +43,30 @@ with predict_tab:
     left, right = st.columns(2)
 
     with left:
+        purchase_year = st.number_input("Purchase year", min_value=2016, max_value=2020, value=2018)
         purchase_month = st.number_input("Purchase month", min_value=1, max_value=12, value=5)
+        purchase_day = st.number_input("Purchase day", min_value=1, max_value=31, value=15)
+        purchase_hour = st.number_input("Purchase hour", min_value=0, max_value=23, value=12)
         purchase_dayofweek = st.number_input("Purchase day of week", min_value=0, max_value=6, value=2)
         customer_state = st.text_input("Customer state", value="SP")
-        customer_city = st.text_input("Customer city", value="sao paulo")
-        payment_installments = st.number_input("Payment installments", min_value=1, value=3)
 
     with right:
-        items_count = st.number_input("Items count", min_value=1, value=2)
-        freight_value = st.number_input("Freight value", min_value=0.0, value=21.5)
-        review_score = st.number_input("Review score", min_value=1.0, max_value=5.0, value=4.0)
-        delivery_delay_days = st.number_input("Delivery delay days", value=0)
+        n_items = st.number_input("Items count", min_value=1, value=2)
+        n_unique_products = st.number_input("Unique products", min_value=1, value=2)
+        n_unique_sellers = st.number_input("Unique sellers", min_value=1, value=1)
+        payment_installments_max = st.number_input("Payment installments", min_value=1, value=3)
 
     predict_payload = {
+        "purchase_year": int(purchase_year),
         "purchase_month": int(purchase_month),
+        "purchase_day": int(purchase_day),
+        "purchase_hour": int(purchase_hour),
         "purchase_dayofweek": int(purchase_dayofweek),
         "customer_state": customer_state,
-        "customer_city": customer_city,
-        "payment_installments": int(payment_installments),
-        "items_count": int(items_count),
-        "freight_value": float(freight_value),
-        "review_score": float(review_score),
-        "delivery_delay_days": int(delivery_delay_days),
+        "n_items": int(n_items),
+        "n_unique_products": int(n_unique_products),
+        "n_unique_sellers": int(n_unique_sellers),
+        "payment_installments_max": int(payment_installments_max),
     }
 
     if st.button("Run prediction", type="primary"):
