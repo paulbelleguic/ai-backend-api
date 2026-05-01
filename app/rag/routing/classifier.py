@@ -49,6 +49,7 @@ class QueryRouter:
         "taille 38",
         "taille m",
         "taille l",
+        "sneaker",
         "sneakers",
         "hoodie",
         "jeans",

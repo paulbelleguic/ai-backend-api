@@ -9,6 +9,7 @@ class CatalogQueryParser:
         "t-shirt": "t-shirt",
         "shirt": "shirt",
         "jeans": "jeans",
+        "sneaker": "sneakers",
         "sneakers": "sneakers",
         "jacket": "jacket",
         "coat": "coat",

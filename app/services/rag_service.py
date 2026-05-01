@@ -33,10 +33,16 @@ class RAGService:
 
     def answer(self, data: ChatRequest) -> ChatResponse:
         question = data.question.strip()
-        routing = self.router.route(question)
+        history = [message.model_dump() for message in data.history] if data.history else []
+        preferred_route = self._get_last_assistant_route(history) if self._is_follow_up(question) else None
+        effective_question = self._build_effective_question(question, history, preferred_route)
+        routing = self.router.route(effective_question)
+
+        if preferred_route in {"support", "catalog"}:
+            routing["route"] = preferred_route
 
         if routing["route"] == "catalog":
-            catalog_result = self._get_catalog_pipeline().search_from_query(question)
+            catalog_result = self._get_catalog_pipeline().search_from_query(effective_question)
             formatted_results = catalog_result["formatted_results"]
             answer = self._build_catalog_answer(formatted_results)
 
@@ -47,7 +53,7 @@ class RAGService:
             )
 
         return ChatResponse(
-            answer=self._answer_from_faq(question),
+            answer=self._answer_from_faq(effective_question),
             route="support",
             sources=["data/raw/faq.txt"],
         )
@@ -79,6 +85,49 @@ class RAGService:
         selected = sentences[:3] if sentences else [content.strip()]
 
         return f"Selon notre FAQ ({title}), " + " ".join(selected)
+
+    def _build_effective_question(
+        self,
+        question: str,
+        history: list[dict],
+        preferred_route: str | None,
+    ) -> str:
+        if not history:
+            return question
+
+        normalized_question = self._normalize_text(question)
+        follow_up_starts = ("et ", "sinon", "avec ", "sans ", "en ", "pour ", "plutot")
+
+        if len(normalized_question.split()) > 4 and not normalized_question.startswith(follow_up_starts):
+            return question
+
+        last_user_query = self._get_last_user_query(history)
+        if not last_user_query:
+            return question
+
+        if preferred_route == "catalog":
+            return f"{question} ; produit precedent : {last_user_query}"
+
+        return f"{last_user_query} ; suivi client : {question}"
+
+    def _is_follow_up(self, question: str) -> bool:
+        normalized_question = self._normalize_text(question)
+        follow_up_starts = ("et ", "sinon", "avec ", "sans ", "en ", "pour ", "plutot")
+        return len(normalized_question.split()) <= 4 or normalized_question.startswith(follow_up_starts)
+
+    @staticmethod
+    def _get_last_user_query(history: list[dict]) -> str | None:
+        for message in reversed(history):
+            if message.get("role") == "user":
+                return message.get("content")
+        return None
+
+    @staticmethod
+    def _get_last_assistant_route(history: list[dict]) -> str | None:
+        for message in reversed(history):
+            if message.get("role") == "assistant":
+                return message.get("route")
+        return None
 
     @staticmethod
     def _split_faq_sections(text: str) -> list[tuple[str, str]]:
