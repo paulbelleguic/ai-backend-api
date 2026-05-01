@@ -1,5 +1,6 @@
 import re
 import unicodedata
+import os
 
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
@@ -10,7 +11,7 @@ class AnswerGenerator:
     """Genere une reponse a partir du contexte recupere."""
 
     def __init__(self) -> None:
-        model_name = "google/flan-t5-base"
+        model_name = os.getenv("LLM_MODEL_NAME", "google/flan-t5-small")
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
 

@@ -1,4 +1,5 @@
 import unicodedata
+from typing import Any
 
 from app.rag.catalog.pipeline import CatalogPipeline
 from app.rag.pipeline import RAGPipeline
@@ -10,8 +11,18 @@ class EcommerceAssistantPipeline:
 
     def __init__(self) -> None:
         self.router = QueryRouter()
-        self.support_pipeline = RAGPipeline()
-        self.catalog_pipeline = CatalogPipeline()
+        self.support_pipeline: Any | None = None
+        self.catalog_pipeline: CatalogPipeline | None = None
+
+    def _get_support_pipeline(self) -> RAGPipeline:
+        if self.support_pipeline is None:
+            self.support_pipeline = RAGPipeline()
+        return self.support_pipeline
+
+    def _get_catalog_pipeline(self) -> CatalogPipeline:
+        if self.catalog_pipeline is None:
+            self.catalog_pipeline = CatalogPipeline()
+        return self.catalog_pipeline
 
     def ask(self, query: str, history: list[dict] | None = None) -> dict:
         if not query.strip():
@@ -30,7 +41,7 @@ class EcommerceAssistantPipeline:
             routing["route"] = preferred_route
 
         if routing["route"] == "catalog":
-            catalog_result = self.catalog_pipeline.search_from_query(effective_query)
+            catalog_result = self._get_catalog_pipeline().search_from_query(effective_query)
             answer = self._build_catalog_answer(catalog_result["formatted_results"])
 
             return {
@@ -47,7 +58,7 @@ class EcommerceAssistantPipeline:
                 "routing": routing,
             }
 
-        support_result = self.support_pipeline.ask(question=effective_query, k=4)
+        support_result = self._get_support_pipeline().ask(question=effective_query, k=4)
 
         return {
             "query": query,
