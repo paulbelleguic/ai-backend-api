@@ -2,7 +2,6 @@ import unicodedata
 from typing import Any
 
 from app.rag.catalog.pipeline import CatalogPipeline
-from app.rag.pipeline import RAGPipeline
 from app.rag.routing.classifier import QueryRouter
 
 
@@ -14,8 +13,10 @@ class EcommerceAssistantPipeline:
         self.support_pipeline: Any | None = None
         self.catalog_pipeline: CatalogPipeline | None = None
 
-    def _get_support_pipeline(self) -> RAGPipeline:
+    def _get_support_pipeline(self) -> Any:
         if self.support_pipeline is None:
+            from app.rag.pipeline import RAGPipeline
+
             self.support_pipeline = RAGPipeline()
         return self.support_pipeline
 

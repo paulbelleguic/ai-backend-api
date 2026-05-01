@@ -24,7 +24,15 @@ def post_json(path: str, payload: dict) -> tuple[dict | None, str | None]:
     if response.status_code >= 400:
         return None, response.text
 
-    return response.json(), None
+    try:
+        data = response.json()
+    except ValueError:
+        return None, "API returned a non-JSON response."
+
+    if data is None:
+        return None, "API returned an empty response."
+
+    return data, None
 
 
 st.title("AI Backend Portfolio")
@@ -109,6 +117,8 @@ with chat_tab:
         with st.chat_message("assistant"):
             if error:
                 st.error(error)
+            elif not data or "answer" not in data:
+                st.error(f"Unexpected API response: {data}")
             else:
                 st.write(data["answer"])
                 st.caption(f"Route: {data['route']}")
