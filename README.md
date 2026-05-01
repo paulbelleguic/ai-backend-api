@@ -4,8 +4,8 @@ Production-oriented AI backend built with FastAPI.
 
 It exposes two AI services:
 
-- an ML prediction model through `POST /predict`
-- a hybrid e-commerce RAG/catalog assistant through `POST /chat`
+- an ML order-value prediction service through `POST /predict`
+- an e-commerce assistant service through `POST /chat`
 
 Live API:
 
@@ -13,21 +13,37 @@ Live API:
 https://ai-backend-api-3jn5.onrender.com
 ```
 
+Interactive docs:
+
+```text
+https://ai-backend-api-3jn5.onrender.com/docs
+```
+
 ## Architecture
 
 ```text
 app/
 ├── api/routes/       # FastAPI endpoints
-├── schemas/          # Pydantic validation
-├── services/         # business logic called by routes
+├── schemas/          # Pydantic input/output contracts
+├── services/         # production service layer
 ├── models/           # ML artifacts
-└── rag/              # RAG pipeline, FAISS, catalog, local LLM
+└── rag/              # catalog, routing, FAQ/RAG modules
 
 frontend/
-└── streamlit_app.py  # portfolio UI consuming the deployed API
+└── streamlit_app.py  # small portfolio UI consuming the API
 ```
 
-The API layer stays thin: routes validate HTTP payloads, schemas define input/output contracts, and services call the ML or RAG pipelines.
+The API layer stays thin: routes handle HTTP, schemas validate payloads, and services call the ML or assistant logic.
+
+## Production Notes
+
+The original local RAG project uses FAISS, embeddings, and a local Transformers model. For the deployed Render service, `/chat` uses a lightweight production path:
+
+- catalog questions are answered from `products.csv`
+- support questions are answered from `faq.txt`
+- no heavy model is loaded at request time
+
+This keeps the deployed demo stable on a small Render instance while preserving the same API contract.
 
 ## Local API
 
@@ -38,7 +54,7 @@ pip install -r requirements.txt
 python -m uvicorn app.main:app --reload
 ```
 
-Interactive documentation:
+Local docs:
 
 ```text
 http://127.0.0.1:8000/docs
@@ -84,37 +100,56 @@ GET /health
 ### ML Prediction
 
 ```http
-POST /predict
+POST /predict/
 ```
 
 Example:
 
 ```json
 {
+  "purchase_year": 2019,
   "purchase_month": 5,
+  "purchase_day": 15,
+  "purchase_hour": 12,
   "purchase_dayofweek": 2,
   "customer_state": "SP",
-  "customer_city": "sao paulo",
-  "payment_installments": 3,
-  "items_count": 2,
-  "freight_value": 21.5,
-  "review_score": 4.0,
-  "delivery_delay_days": 0
+  "n_items": 2,
+  "n_unique_products": 2,
+  "n_unique_sellers": 1,
+  "payment_installments_max": 3
 }
 ```
 
-### RAG Chat
+Response:
+
+```json
+{
+  "prediction": 100.39
+}
+```
+
+### E-commerce Chat
 
 ```http
-POST /chat
+POST /chat/
 ```
 
 Example:
 
 ```json
 {
-  "question": "je cherche des produits pas chers",
+  "question": "sneakers noires en 42",
   "history": []
+}
+```
+
+Response:
+
+```json
+{
+  "answer": "J'ai trouve les produits suivants : ...",
+  "route": "catalog",
+  "sources": ["data/raw/products.csv"]
 }
 ```
 
